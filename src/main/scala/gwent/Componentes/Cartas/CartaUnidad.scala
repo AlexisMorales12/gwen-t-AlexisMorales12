@@ -24,4 +24,17 @@ import gwent.Componentes.Cartas.Carta
 class CartaUnidad(nombre: String ,clasificacion: String, fuerza: Int) extends Carta(nombre, "Unidad") {
   val Clasificacion: String = clasificacion
   var Fuerza: Int = fuerza
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[CartaUnidad]
+
+  override def equals(that: Any): Boolean = {
+    if (canEqual(that)) {
+      val other = that.asInstanceOf[CartaUnidad]
+      (this eq other) ||
+        (this.Nombre == other.Nombre && this.Clasificacion == other.Clasificacion )
+    }
+    else {
+      false
+    }
+  }
 }

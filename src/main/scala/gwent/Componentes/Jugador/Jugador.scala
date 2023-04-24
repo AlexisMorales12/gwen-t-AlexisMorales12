@@ -20,13 +20,24 @@ import gwent.Componentes.Acciones.Acciones
  *
  * @author Alexis Morales
  */
-class Jugador (nombre: String, seccion: String) extends Acciones{
+class Jugador (nombre: String, seccion: String) extends Acciones with Equals{
   val Nombre: String = nombre
   val Seccion: String = seccion
   var Gemas: Int = 25
   var Mazo: Int = 25
   var Mano: Int = 1
 
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[Jugador]
+  override def equals(that: Any): Boolean = {
+    if (canEqual(that)) {
+      val other = that.asInstanceOf[Jugador]
+      (this eq other) ||
+        (this.Nombre == other.Nombre && this.Gemas == other.Gemas && this.Seccion == other.Seccion && this.Mazo == other.Mazo && this.Mano == other.Mano)
+    }
+    else{
+      false
+    }
+  }
   /**
    * Roba una carta del mazo del jugador y la añade a la mano
    *

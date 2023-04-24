@@ -22,4 +22,17 @@ import gwent.Componentes.Cartas.Carta
  */
 class CartaClima (nombre: String, habilidad: String)extends Carta(nombre, "Clima"){
   val Habilidad: String = habilidad
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[CartaClima]
+
+  override def equals(that: Any): Boolean = {
+    if (canEqual(that)) {
+      val other = that.asInstanceOf[CartaClima]
+      (this eq other) ||
+        (this.Nombre == other.Nombre && this.Habilidad == other.Habilidad)
+    }
+    else {
+      false
+    }
+  }
 }

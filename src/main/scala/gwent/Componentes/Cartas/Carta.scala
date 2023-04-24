@@ -17,7 +17,19 @@ package gwent.Componentes.Cartas
  *
  * @author Alexis Morales
  */
-class Carta(nombre: String , tipo: String){
+class Carta(nombre: String , tipo: String) extends Equals{
   val Nombre: String = nombre
   val Tipo: String = tipo
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[Carta]
+  override def equals(that: Any): Boolean = {
+    if (canEqual(that)) {
+      val other = that.asInstanceOf[Carta]
+      (this eq other) ||
+        (this.Nombre == other.Nombre && this.Tipo == other.Tipo)
+    }
+    else {
+      false
+    }
+  }
 }
