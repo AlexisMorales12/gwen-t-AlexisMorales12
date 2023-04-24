@@ -32,4 +32,12 @@ class Carta(nombre: String , tipo: String) extends Equals{
       false
     }
   }
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + classOf[Carta].##
+    result = prime * result + Nombre.##
+    result = prime * result + Tipo.##
+    result
+  }
 }

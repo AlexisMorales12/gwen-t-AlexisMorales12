@@ -1,10 +1,11 @@
 package cl.uchile.dcc
 import munit.FunSuite
-
 import gwent.Componentes.Jugador.Jugador
 import gwent.Componentes.Cartas.CartaUnidad
 import gwent.Componentes.Cartas.Carta
 import gwent.Componentes.Cartas.CartaClima
+
+import scala.collection.mutable
 class Jugadortest extends FunSuite {
   var jugador: Jugador = _
   var jugador2: Jugador = _
@@ -14,6 +15,7 @@ class Jugadortest extends FunSuite {
   }
   test("Un jugador es igual a otro si comparte parametros") {
     assertEquals(jugador.equals(jugador2), true)
+    assertEquals(jugador.hashCode, jugador2.hashCode)
   }
   test("Un jugador debe tener nombre") {
     assertEquals(jugador.Nombre, "John")
@@ -53,6 +55,7 @@ class CartaUnidadtest extends FunSuite {
 
   test("Un CartaUnidad es igual a otra si tiene el mismo nombre y clasificacion") {
     assertEquals(cartaunidad.equals(cartaunidad2), true)
+    assertEquals(cartaunidad.hashCode, cartaunidad2.hashCode)
   }
   test("Un CartaUnidad debe tener nombre") {
     assertEquals(cartaunidad.Nombre, "Barbaro")
@@ -76,6 +79,7 @@ class Cartatest extends FunSuite{
   }
   test("Una carta es igual a otra si tiene el mismo nombre y tipo") {
     assertEquals(carta.equals(carta2), true)
+    assertEquals(carta.hashCode,carta2.hashCode)
   }
   test("Una carta debe tener un nombre"){
     assertEquals(carta.Nombre, "Barbaro")
@@ -94,6 +98,7 @@ class CartaClimatest extends FunSuite{
   }
   test("Una carta de clima es igual a otra si tiene el mismo nombre y habilidad") {
     assertEquals(cartaclima.equals(cartaclima2), true)
+    assertEquals(cartaclima.hashCode, cartaclima2.hashCode)
   }
   test("Una carta de clima debe tener un nombre"){
     assertEquals(cartaclima.Nombre, "Escarcha mordiente")

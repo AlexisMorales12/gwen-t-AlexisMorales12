@@ -38,6 +38,18 @@ class Jugador (nombre: String, seccion: String) extends Acciones with Equals{
       false
     }
   }
+
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + classOf[Jugador].##
+    result = prime * result + Nombre.##
+    result = prime * result + Gemas.##
+    result = prime * result + Seccion.##
+    result = prime * result + Mazo.##
+    result = prime * result + Mano.##
+    result
+  }
   /**
    * Roba una carta del mazo del jugador y la añade a la mano
    *

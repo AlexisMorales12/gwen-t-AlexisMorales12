@@ -35,4 +35,13 @@ class CartaClima (nombre: String, habilidad: String)extends Carta(nombre, "Clima
       false
     }
   }
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + classOf[CartaClima].##
+    result = prime * result + Nombre.##
+    result = prime * result + Tipo.##
+    result = prime * result + Habilidad.##
+    result
+  }
 }

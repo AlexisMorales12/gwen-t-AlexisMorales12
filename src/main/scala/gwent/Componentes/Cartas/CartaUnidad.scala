@@ -37,4 +37,14 @@ class CartaUnidad(nombre: String ,clasificacion: String, fuerza: Int) extends Ca
       false
     }
   }
+
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + classOf[CartaUnidad].##
+    result = prime * result + Nombre.##
+    result = prime * result + Tipo.##
+    result = prime * result + Clasificacion.##
+    result
+  }
 }
