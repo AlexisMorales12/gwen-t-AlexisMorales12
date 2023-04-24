@@ -1,7 +1,9 @@
 package cl.uchile.dcc
 package gwent.Componentes.Acciones
 
-trait Acciones {
-  def jugar(x: Any): Any
-  def robar(x: Any): Any
+import gwent.Componentes.Jugador.Jugador
+
+trait Acciones{
+  def jugar(obj: Jugador): Unit
+  def robar(obj: Jugador, numero: Int): Unit
 }
