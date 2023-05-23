@@ -14,7 +14,8 @@ Se crearon diferentes test para probar algunas casos.
 Se creo la clase carta y carta de clima, la cual es una subclase de la primera, ademas de añadir carta de unidad como subclase de carta con el fin de que en el futuro cuando se entreguen las cartas el mazo del jugador de una lista de cartas de la clase carta
 Tambien se documentaron las clases , traits y funciones.
 Se le hizo override a la funcion equals en las clases Jugador, Carta, CartaUnidad y CartaClima estableciendo diferentes parametros para determinar la igualdad de clase y luego se testeo 
-Se le hizo override a la funcion hashCpdeen las clases Jugador, Carta, CartaUnidad y CartaClima estableciendo diferentes parametros para determinar la igualdad de clase y luego se testeo 
+Se le hizo override a la funcion hashCpdeen las clases Jugador, Carta, CartaUnidad y CartaClima estableciendo diferentes parametros para determinar la igualdad de clase y luego se testeo
+Se corrigieron las clases, se añadieron los 3 tipos de carta unidad, se implemento el tablero y se cambio las acciones de jugar y robar 
 This project's goal is to create a (simplified) clone of the
 [_Gwent_](https://www.playgwent.com/en)card game developed by [_CD PROJEKT RED_](https://cdprojektred.com/en/)
 

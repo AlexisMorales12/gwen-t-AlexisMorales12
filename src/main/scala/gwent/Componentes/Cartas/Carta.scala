@@ -1,6 +1,7 @@
 package cl.uchile.dcc
 package gwent.Componentes.Cartas
 
+import gwent.Componentes.Tablero.Tablero
 /**
  *Una carta esta definida con un nombre y una tipo 
  *
@@ -17,16 +18,16 @@ package gwent.Componentes.Cartas
  *
  * @author Alexis Morales
  */
-class Carta(nombre: String , tipo: String) extends Equals{
-  val Nombre: String = nombre
-  val Tipo: String = tipo
+trait Carta extends Equals{
+  val Nombre: String
+  val Descripcion: String
 
   override def canEqual(that: Any): Boolean = that.isInstanceOf[Carta]
   override def equals(that: Any): Boolean = {
     if (canEqual(that)) {
       val other = that.asInstanceOf[Carta]
       (this eq other) ||
-        (this.Nombre == other.Nombre && this.Tipo == other.Tipo)
+        (this.Nombre == other.Nombre && this.Descripcion == other.Descripcion)
     }
     else {
       false
@@ -37,7 +38,8 @@ class Carta(nombre: String , tipo: String) extends Equals{
     var result = 1
     result = prime * result + classOf[Carta].##
     result = prime * result + Nombre.##
-    result = prime * result + Tipo.##
+    result = prime * result + Descripcion.##
     result
   }
+  def jugar(tablero: Tablero): Unit = Unit
 }

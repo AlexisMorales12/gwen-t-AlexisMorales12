@@ -1,7 +1,7 @@
 package cl.uchile.dcc
 package gwent.Componentes.Jugador
 
-import gwent.Componentes.Cartas.CartaUnidad
+import gwent.Componentes.Cartas.Carta
 import gwent.Componentes.Acciones.Acciones
 
 /**
@@ -20,12 +20,12 @@ import gwent.Componentes.Acciones.Acciones
  *
  * @author Alexis Morales
  */
-class Jugador (nombre: String, seccion: String) extends Acciones with Equals{
+class Jugador (nombre: String, seccion: String) extends Acciones with Equals with Carta{
   val Nombre: String = nombre
   val Seccion: String = seccion
   var Gemas: Int = 25
-  var Mazo: Int = 25
-  var Mano: Int = 1
+  var Mazo: List[Carta] = List()
+  var Mano: List[Carta] = List()
 
   override def canEqual(that: Any): Boolean = that.isInstanceOf[Jugador]
   override def equals(that: Any): Boolean = {
@@ -68,9 +68,10 @@ class Jugador (nombre: String, seccion: String) extends Acciones with Equals{
    * @see Acciones
    */
   override def robar(obj:Jugador, numero: Int): Unit = {
-    if ((obj.Mazo-numero)>=0){
-      obj.Mazo -= numero
-      obj.Mano += numero
+    while ((obj.Mazo.nonEmpty) || ( numero > 0)){
+      obj.Mano = obj.Mano :: obj.Mazo.head
+      obj.Mazo = obj.Mazo.tail
+      numero = numero - 1
     }
   }
 
@@ -89,9 +90,10 @@ class Jugador (nombre: String, seccion: String) extends Acciones with Equals{
    * }}}
    * @see Acciones
    */
-  override def jugar(obj: Jugador): Unit = {
-    if (obj.Mano>0){
-      obj.Mano -= 1
+  override def jugar(obj: Jugador, numero: Int,tablero: Tablero): Unit = {
+    if(obj.Mano.nonEmpty){
+      obj.Mano(numero+1).jugar(tablero)
+      tablero.jugador_jugo(obj)
     }
   }
 }

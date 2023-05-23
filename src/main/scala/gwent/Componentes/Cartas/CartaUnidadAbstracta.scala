@@ -21,17 +21,27 @@ import gwent.Componentes.Cartas.Carta
  * @see Carta
  * @author Alexis Morales
  */
-class CartaUnidad(nombre: String ,clasificacion: String, fuerza: Int) extends Carta(nombre, "Unidad") {
-  val Clasificacion: String = clasificacion
-  var Fuerza: Int = fuerza
+abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcion: String, val Fuerza: Int) extends Carta{
+  var _FuerzaModificada: Int = Fuerza
+  def FuerzaActual: Int = _FuerzaModificada
 
-  override def canEqual(that: Any): Boolean = that.isInstanceOf[CartaUnidad]
+  def FuerzaModificada_(NuevaFuerza: Int): Unit = {
+    _FuerzaModificada = NuevaFuerza
+  }
+  def refuerzo_moral(): Unit = {
+    FuerzaModificada_(FuerzaActual + 1)
+  }
+  def vinculo_estrecho(): Unit = {
+    FuerzaModificada_(FuerzaActual + 2)
+  }
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[CartaUnidadAbstracta]
+
 
   override def equals(that: Any): Boolean = {
     if (canEqual(that)) {
-      val other = that.asInstanceOf[CartaUnidad]
+      val other = that.asInstanceOf[CartaUnidadAbstracta]
       (this eq other) ||
-        (this.Nombre == other.Nombre && this.Clasificacion == other.Clasificacion )
+        (this.Nombre == other.Nombre && this.Descripcion == other.Descripcion )
     }
     else {
       false
@@ -41,10 +51,9 @@ class CartaUnidad(nombre: String ,clasificacion: String, fuerza: Int) extends Ca
   override def hashCode: Int = {
     val prime = 31
     var result = 1
-    result = prime * result + classOf[CartaUnidad].##
+    result = prime * result + classOf[CartaUnidadAbstracta].##
     result = prime * result + Nombre.##
-    result = prime * result + Tipo.##
-    result = prime * result + Clasificacion.##
+    result = prime * result + Descripcion.##
     result
   }
 }
