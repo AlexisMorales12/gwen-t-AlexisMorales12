@@ -2,44 +2,34 @@ package cl.uchile.dcc
 package gwent.Componentes.Cartas
 
 import gwent.Componentes.Tablero.Tablero
-/**
- *Una carta esta definida con un nombre y una tipo 
+/** Trait representing a card in the Gwen't game.
  *
- * @param nombre es el nombre de la carta
- * @param tipo es el tipo de la carta: unidad o clima
- * @constructor Crea una carta con un nombre y que tipo
+ * A card is characterized by its [[Nombre]] and [[Descripcion]].
+ * This trait serves as a common interface for all card types and ensures that every card,
+ * regardless of its specific subtype, will have these basic properties.
  *
- * @example
- * {{{
- * val carta = new Carta("Barbaro","Unidad")
- * val tipo = carta.Tipo
- * println("El tipo de la carta es:" + tipo)
- * }}}
+ * The ``val`` keyword in the property declarations indicates that these properties are
+ * immutable -- once a card has been created with a certain name and description, these
+ * cannot be changed.
+ * This reflects the real-world behaviour of game cards, which have fixed names and
+ * descriptions printed on them.
  *
- * @author Alexis Morales
+ * The actual content of these properties, as well as any additional properties or
+ * behaviours, are to be defined in the concrete classes that extend this trait.
+ *
+ * @author <a href="https://www.github.com/r8vnhill">R8V</a>
+ * @author ~YOUR NAME~
+ * @version 1.1
+ * @since 1.0
  */
 trait Carta extends Equals{
   val Nombre: String
   val Descripcion: String
 
-  override def canEqual(that: Any): Boolean = that.isInstanceOf[Carta]
-  override def equals(that: Any): Boolean = {
-    if (canEqual(that)) {
-      val other = that.asInstanceOf[Carta]
-      (this eq other) ||
-        (this.Nombre == other.Nombre && this.Descripcion == other.Descripcion)
-    }
-    else {
-      false
-    }
-  }
-  override def hashCode: Int = {
-    val prime = 31
-    var result = 1
-    result = prime * result + classOf[Carta].##
-    result = prime * result + Nombre.##
-    result = prime * result + Descripcion.##
-    result
-  }
-  def jugar(tablero: Tablero): Unit = Unit
+  /** Permite jugar una carta en el tablero de juego
+   *  Esta añade las cartas jugadas a su espacio asignado en el tablero
+   *
+   * @param tablero es el tablero donde se jugara la carta
+   */
+  def jugar(tablero: Tablero): Unit
 }
