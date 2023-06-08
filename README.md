@@ -17,6 +17,11 @@ Se le hizo override a la funcion equals en las clases Jugador, Carta, CartaUnida
 Se le hizo override a la funcion hashCpdeen las clases Jugador, Carta, CartaUnidad y CartaClima estableciendo diferentes parametros para determinar la igualdad de clase y luego se testeo
 Se corrigieron las clases, se añadieron los 3 tipos de carta unidad, se implemento el tablero y se cambio las acciones de jugar y robar
 Se añadio documentacion , se agregaron distintos setters y getters, se corrigieron errores al jugar las cartas, y se añadieron los efectos que producen al jugar las distintas cartas
+Añadido patron de estados, cuyos estados seran modificados en el futuro
+
+## Diagrama de estados
+
+![Diagrama de estados](diagrama.jpeg)
 
 This project's goal is to create a (simplified) clone of the
 [_Gwent_](https://www.playgwent.com/en)card game developed by [_CD PROJEKT RED_](https://cdprojektred.com/en/)
