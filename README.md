@@ -18,6 +18,7 @@ Se le hizo override a la funcion hashCpdeen las clases Jugador, Carta, CartaUnid
 Se corrigieron las clases, se añadieron los 3 tipos de carta unidad, se implemento el tablero y se cambio las acciones de jugar y robar
 Se añadio documentacion , se agregaron distintos setters y getters, se corrigieron errores al jugar las cartas, y se añadieron los efectos que producen al jugar las distintas cartas
 Añadido patron de estados, cuyos estados seran modificados en el futuro
+Añadido patron observador, con el fin de mirar que cartas entran en juego para aplicar los diferentes efectos
 
 ## Diagrama de estados
 
