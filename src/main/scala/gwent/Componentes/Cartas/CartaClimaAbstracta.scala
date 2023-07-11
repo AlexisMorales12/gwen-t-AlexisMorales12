@@ -15,7 +15,7 @@ import gwent.Componentes.Tablero.Tablero
  * @author Alexis Morales
  */
 abstract class CartaClimaAbstracta protected(val Nombre: String, val Descripcion: String)extends Carta{
-  private var observadores: List[Observador] = List()
+  /**private var observadores: List[Observador] = List()
 
   def agregarObservador(observador: Observador): Unit = {
     observadores = observador :: observadores
@@ -28,6 +28,7 @@ abstract class CartaClimaAbstracta protected(val Nombre: String, val Descripcion
   def notificarObservadores(): Unit = {
     observadores.foreach(_.actualizar(this))
   }
+  */
   /** Desencadena los efectos que ocurren sobre las lineas de cartas cuando una carta clima sale
    *  de juego
    * 

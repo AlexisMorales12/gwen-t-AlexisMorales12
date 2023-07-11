@@ -18,7 +18,7 @@ abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcio
   private var _FuerzaModificada: Int = Fuerza
   private var _FuerzaModificadaReal: Int = Fuerza
   private var _Clima: Boolean = false
-  private var observadores: List[Observador] = List()
+  /**private var observadores: List[Observador] = List()
 
   def agregarObservador(observador: Observador): Unit = {
     observadores = observador :: observadores
@@ -31,6 +31,7 @@ abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcio
   def notificarObservadores(): Unit = {
     observadores.foreach(_.actualizar(this))
   }
+  */
   /**
    *
    * @return la fuerza actual la carta afectada por climas

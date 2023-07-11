@@ -25,13 +25,33 @@ import scala.::
 class Jugador (nombre: String, seccion: String) extends Equals {
   val Nombre: String = nombre
   val Seccion: String = seccion
-  var Gemas: Int = 2
+  ptrivate var Gemas: Int = 2
   var Mazo: List[Carta] = List(new CartaUnidadCuerpoACuerpo("Barbaro"," ", 2),new CartaUnidadCuerpoACuerpo("Capitan","Refuerzo Moral", 4),new CartaUnidadCuerpoACuerpo("Barbaro","Vínculo Estrecho", 2),
                                new CartaUnidadDeAsedio("Catapulta"," ", 2), new CartaUnidadDeAsedio("Ariete","Refuerzo Moral", 4), new CartaUnidadDeAsedio("Catapulta","Vínculo Estrecho", 2),
                                new CartaUnidadADistancia("Arquero", " ", 2), new CartaUnidadADistancia("Ballestero", "Refuerzo Moral", 4), new CartaUnidadADistancia("Arquero","Vínculo Estrecho", 2),
                                new CartaClimaEscarchaMordiente, new CartaClimaCieloDespejado, new CartaClimaNieblaImpenetrable ,new CartaClimaLluviaTorrencial)
   var Mano: List[Carta] = List()
+  private var observadores: List[Observador] = List()
+  private var atributo: Int = 0
 
+  def agregarObservador(observador: Observador): Unit = {
+    observadores = observadores :+ observador
+  }
+
+  def eliminarObservador(observador: Observador): Unit = {
+    observadores = observadores.filter(_ != observador)
+  }
+
+  def setAtributo(nuevoAtributo: Int): Unit = {
+    atributo = nuevoAtributo
+    notificarObservadores()
+  }
+
+  private def notificarObservadores(): Unit = {
+    observadores.foreach(_.actualizar(this))
+  }
+
+  def getAtributo: Int = Gemas
   override def canEqual(that: Any): Boolean = that.isInstanceOf[Jugador]
   override def equals(that: Any): Boolean = {
     if (canEqual(that)) {

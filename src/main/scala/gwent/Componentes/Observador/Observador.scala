@@ -1,6 +1,6 @@
 package cl.uchile.dcc
 package gwent.Componentes.Observador
 
-trait Observador {
-  def actualizar(carta: Carta): Unit
+trait Observador [T]{
+  def actualizar(objeto: T): Unit
 }
