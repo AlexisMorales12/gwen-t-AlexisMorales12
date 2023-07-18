@@ -19,6 +19,9 @@ Se corrigieron las clases, se añadieron los 3 tipos de carta unidad, se impleme
 Se añadio documentacion , se agregaron distintos setters y getters, se corrigieron errores al jugar las cartas, y se añadieron los efectos que producen al jugar las distintas cartas
 Añadido patron de estados, cuyos estados seran modificados en el futuro
 Añadido patron observador, con el fin de mirar que cartas entran en juego para aplicar los diferentes efectos
+se añadieron los estados que faltaban en el patron de estados, para las habilidades de utilizo strategy, ademas de añadirse una clase Nula para representar a las cartas que no tienen habilidades, y el controlador se conecto con un gestor conectador a un observador para notificarlo de que algun jugador se quedo sin gemas.
+Se corrigieron las filas en las que invocan las cartas y se corrigieron sus metodos
+Se añadio documentacion y se añadieron diferentes setters y getters para obtener distinta informacion sobre variables
 
 ## Diagrama de estados
 

@@ -2,6 +2,7 @@ package cl.uchile.dcc
 package gwent.Componentes.Cartas
 
 import gwent.Componentes.Cartas.Carta
+import gwent.Componentes.Habilidades.Habilidad
 
 /**
  *Una version generica de las cartas de unidad que estan definidas con un Nombre, una Descripcion y Fuerza
@@ -9,29 +10,24 @@ import gwent.Componentes.Cartas.Carta
  * @param Nombre es el nombre de la carta
  * @param Descripcion es la descripcion de la carta
  * @param Fuerza es la fuerza de la carta
- *
+ * @param habilidad es la habilidad de la carta
  *
  * @see Carta
  * @author Alexis Morales
  */
-abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcion: String, val Fuerza: Int) extends Carta{
+abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcion: String, val Fuerza: Int, val habilidad: Habilidad) extends Carta{
   private var _FuerzaModificada: Int = Fuerza
   private var _FuerzaModificadaReal: Int = Fuerza
   private var _Clima: Boolean = false
-  /**private var observadores: List[Observador] = List()
 
-  def agregarObservador(observador: Observador): Unit = {
-    observadores = observador :: observadores
+  /** Es el efecto que tiene la carta al entrar en combate
+   * 
+   * @param fila es la fila a la que pertenece la carta
+   * @param nombre es el nombre de la carta
+   */
+  def efectoColocacion(fila:List[CartaUnidadAbstracta], nombre: String): Unit ={
+    habilidad.activar_habilidad(fila, nombre)
   }
-
-  def eliminarObservador(observador: Observador): Unit = {
-    observadores = observadores.filterNot(_ == observador)
-  }
-
-  def notificarObservadores(): Unit = {
-    observadores.foreach(_.actualizar(this))
-  }
-  */
   /**
    *
    * @return la fuerza actual la carta afectada por climas
@@ -90,15 +86,14 @@ abstract class CartaUnidadAbstracta protected(val Nombre: String ,val Descripcio
    * @return la fuerza actual de la carta con modificador de clima
    */
   def obtener_Fuerza(): Int = {
-    return FuerzaActual
+    FuerzaActual
   }
   /** Permite obtener la fuerza de la carta sin el modificador de clima
    *
    * @return la fuerza actual de la carta sin modificador de clima
    */
-  def obtener_FuerzaReal(): Int = {
-    return FuerzaReal
-  }
+  def obtener_FuerzaReal(): Int = FuerzaReal
+  
   override def canEqual(that: Any): Boolean = that.isInstanceOf[CartaUnidadAbstracta]
 
 

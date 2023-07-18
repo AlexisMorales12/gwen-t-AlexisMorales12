@@ -2,6 +2,8 @@ package cl.uchile.dcc
 package gwent.Componentes.Cartas
 
 import gwent.Componentes.Tablero.Tablero
+
+import cl.uchile.dcc.gwent.Componentes.Jugador.Jugador
 /**Es el constructor de la carta clima Lluvia Torrencial, la cual afecta a las cartas ubicadas en al zona de
  * asedio
  *
@@ -19,34 +21,21 @@ import gwent.Componentes.Tablero.Tablero
 class CartaClimaLluviaTorrencial extends CartaClimaAbstracta("Lluvia torrencial", "Establece el valor de todas las cartas de asedio a 1"){
   /** Añade la carta clima Lluvia Torrencial a la zona de clima y genera los efectos de esta
    *
-   * @param tablero es el tablero donde se jugara la carta
+   * @param jugador  es el jugador
+   * @param oponente es el oponente del jugador
    */
-  override def jugar(tablero: Tablero): Unit = {
-    val clima_previo = tablero.zona_clima
-    tablero.zona_clima = new CartaClimaLluviaTorrencial
-    clima_previo.salida_de_clima(tablero)
-    for (elemento <- tablero.zona_de_asedio) {
-      elemento.entrada_clima()
-      elemento.FuerzaModificada_(elemento.obtener_FuerzaReal())
-    }
-    for (elemento <- tablero.zona_de_asedio_pc) {
-      elemento.entrada_clima()
-      elemento.FuerzaModificada_(elemento.obtener_FuerzaReal())
-    }
+  override def jugar(jugador: Jugador,oponente:Jugador): Unit = {
+    juego(jugador,oponente)
+    invocar(jugador.Zona_de_asedio)
+    invocar(oponente.Zona_de_asedio)
   }
 
   /** La salida este clima le devuelve la fuerza a las cartas ubicadas en la zona de asedio
    *
-   * @param tablero es el tablero de donde es retirado el clima
+   * @param jugador es el jugador al que afectara
    */
-  override def salida_de_clima(tablero: Tablero): Unit = {
-    for (elemento <- tablero.zona_de_asedio) {
-      elemento.salida_clima()
-      elemento.FuerzaModificada_(elemento.obtener_FuerzaReal())
-    }
-    for (elemento <- tablero.zona_de_asedio_pc) {
-      elemento.salida_clima()
-      elemento.FuerzaModificada_(elemento.obtener_FuerzaReal())
-    }
+
+  override def desinvocar_clima(jugador: Jugador): Unit = {
+    salida_de_clima(jugador.Zona_de_asedio)
   }
 }

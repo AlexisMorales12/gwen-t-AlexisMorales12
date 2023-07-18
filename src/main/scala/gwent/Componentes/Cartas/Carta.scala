@@ -2,6 +2,7 @@ package cl.uchile.dcc
 package gwent.Componentes.Cartas
 
 import gwent.Componentes.Tablero.Tablero
+import gwent.Componentes.Jugador.Jugador
 /** Trait representing a card in the Gwen't game.
  *
  * A card is characterized by its [[Nombre]] and [[Descripcion]].
@@ -31,5 +32,5 @@ trait Carta extends Equals{
    *
    * @param tablero es el tablero donde se jugara la carta
    */
-  def jugar(tablero: Tablero): Unit
+  def jugar(jugador: Jugador,oponente: Jugador): Unit
 }

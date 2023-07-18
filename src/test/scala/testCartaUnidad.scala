@@ -2,6 +2,7 @@ package cl.uchile.dcc
 
 import munit.FunSuite
 import gwent.Componentes.Cartas.*
+import gwent.Componentes.Habilidades.NullHabilidad
 import scala.collection.mutable
 class CartaUnidadtest extends FunSuite {
   var cartaunidadcuerpoacuerpo: CartaUnidadCuerpoACuerpo = _
@@ -11,12 +12,12 @@ class CartaUnidadtest extends FunSuite {
   var cartaunidaddeasedio: CartaUnidadDeAsedio = _
   var cartaunidaddeasedio1: CartaUnidadDeAsedio = _
   override def beforeEach(context: BeforeEach): Unit = {
-    cartaunidadcuerpoacuerpo = new CartaUnidadCuerpoACuerpo("Barbaro", " ", 2)
-    cartaunidadcuerpoacuerpo1 = new CartaUnidadCuerpoACuerpo("Barbaro", " ", 2)
-    cartaunidadadistancia = new CartaUnidadADistancia("Arquero"," ", 3)
-    cartaunidadadistancia1 = new CartaUnidadADistancia("Arquero"," ", 3)
-    cartaunidaddeasedio = new CartaUnidadDeAsedio("Catapulta"," ", 5)
-    cartaunidaddeasedio1 = new CartaUnidadDeAsedio("Catapulta"," ", 5)
+    cartaunidadcuerpoacuerpo = new CartaUnidadCuerpoACuerpo("Barbaro", " ", 2, new NullHabilidad)
+    cartaunidadcuerpoacuerpo1 = new CartaUnidadCuerpoACuerpo("Barbaro", " ", 2,new NullHabilidad)
+    cartaunidadadistancia = new CartaUnidadADistancia("Arquero"," ", 3,new NullHabilidad)
+    cartaunidadadistancia1 = new CartaUnidadADistancia("Arquero"," ", 3,new NullHabilidad)
+    cartaunidaddeasedio = new CartaUnidadDeAsedio("Catapulta"," ", 5,new NullHabilidad)
+    cartaunidaddeasedio1 = new CartaUnidadDeAsedio("Catapulta"," ", 5,new NullHabilidad)
   }
   test("Dos cartas son iguales si tienen el mismo nombre, descripcion y fuerza") {
     assertEquals(cartaunidadcuerpoacuerpo.equals(cartaunidadcuerpoacuerpo1), true)

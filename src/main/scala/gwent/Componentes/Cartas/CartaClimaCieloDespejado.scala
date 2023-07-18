@@ -2,6 +2,8 @@ package cl.uchile.dcc
 package gwent.Componentes.Cartas
 import gwent.Componentes.Tablero.Tablero
 
+import cl.uchile.dcc.gwent.Componentes.Jugador.Jugador
+
 /**Es el constructor de la carta clima Cielo Despejado, la cual no afecta ninguna de las lineas de cartas
  * en el tablero
  *  
@@ -19,20 +21,18 @@ import gwent.Componentes.Tablero.Tablero
 class CartaClimaCieloDespejado extends CartaClimaAbstracta("Clima despejado", "Elimina todos los efectos climáticos actualmente en efecto en el campo de batalla") {
   /**Añade la carta clima Cielo Despejado a la zona de clima y genera los efectos de esta
    * 
-   * @param tablero es el tablero donde se jugara la carta
+   * @param jugador es el jugador
+   * @param oponente es el oponente del jugador
    */
-  override def jugar(tablero: Tablero): Unit = {
-    val clima_previo = tablero.zona_clima
-    tablero.zona_clima = new CartaClimaCieloDespejado()
-    clima_previo.salida_de_clima(tablero)
+  override def jugar(jugador: Jugador,oponente:Jugador): Unit = {
+    juego(jugador,oponente)
   }
 
   /**La salida de este clima no produce nada, ya que, esta carta no afecta a las lineas de cartas en el
    * tablero
    * 
-   * @param tablero es el tablero de donde es retirado el clima
+   * @param jugador es el jugador al que afectara
    */
-  override def salida_de_clima(tablero:Tablero): Unit = {
-    return
+  override def desinvocar_clima(jugador: Jugador): Unit = {
   }
 }

@@ -2,7 +2,10 @@ package cl.uchile.dcc
 package gwent.Componentes.Jugador
 
 import gwent.Componentes.Cartas.*
-import gwent.Componentes.Tablero.Tablero
+import gwent.Componentes.Tablero.{Tablero, Zona, Zona_clima}
+import gwent.Componentes.Observador.{GestorJugador, Observador}
+
+import cl.uchile.dcc.gwent.Componentes.Habilidades.{NullHabilidad, RefuerzoMoral, VinculoEstrecho}
 
 import scala.::
 
@@ -11,46 +14,54 @@ import scala.::
  *
  * @param nombre el nombre del jugador
  * @param seccion la seccion del tablero que le corresponde
- * @constructor Crea un jugador con un nombre y que tiene asignado una seccion de tablero
+ * @param gestorJugador es el gestor del jugador y medio de comunicaion con el controlador
+ * @constructor Crea un jugador con un nombre y que tiene asignado una seccion y un gestor
  *
  * @example
  * {{{
- * val jugador = new Jugador("John","Norte")
+ * val jugador = new Jugador("John","Norte", new GestorJugador(controller))
  * val seccion = jugador.Seccion
  * println("La seccion del tablero es:" + seccion)
  * }}}
  *
  * @author Alexis Morales
  */
-class Jugador (nombre: String, seccion: String) extends Equals {
+class Jugador (nombre: String, seccion: String,gestorJugador: GestorJugador) extends Equals with Observador {
   val Nombre: String = nombre
   val Seccion: String = seccion
-  ptrivate var Gemas: Int = 2
-  var Mazo: List[Carta] = List(new CartaUnidadCuerpoACuerpo("Barbaro"," ", 2),new CartaUnidadCuerpoACuerpo("Capitan","Refuerzo Moral", 4),new CartaUnidadCuerpoACuerpo("Barbaro","Vínculo Estrecho", 2),
-                               new CartaUnidadDeAsedio("Catapulta"," ", 2), new CartaUnidadDeAsedio("Ariete","Refuerzo Moral", 4), new CartaUnidadDeAsedio("Catapulta","Vínculo Estrecho", 2),
-                               new CartaUnidadADistancia("Arquero", " ", 2), new CartaUnidadADistancia("Ballestero", "Refuerzo Moral", 4), new CartaUnidadADistancia("Arquero","Vínculo Estrecho", 2),
+  val GestorJugador: GestorJugador = gestorJugador
+  var Zona_cuerpo_a_cuerpo: Zona[CartaUnidadCuerpoACuerpo] = new Zona[CartaUnidadCuerpoACuerpo]
+  var Zona_de_asedio: Zona[CartaUnidadDeAsedio] = new Zona[CartaUnidadDeAsedio]
+  var Zona_a_distancia: Zona[CartaUnidadADistancia] = new Zona[CartaUnidadADistancia]
+  var Zona_clima: Zona_clima = new Zona_clima
+  private var Gemas: Int = 2
+
+  var Mazo: List[Carta] = List(new CartaUnidadCuerpoACuerpo("Barbaro"," ", 2, new NullHabilidad),new CartaUnidadCuerpoACuerpo("Capitan","Refuerzo Moral", 4, new RefuerzoMoral),new CartaUnidadCuerpoACuerpo("Barbaro","Vínculo Estrecho", 2, new VinculoEstrecho),
+                               new CartaUnidadDeAsedio("Catapulta"," ", 2, new NullHabilidad), new CartaUnidadDeAsedio("Ariete","Refuerzo Moral", 4, new RefuerzoMoral), new CartaUnidadDeAsedio("Catapulta","Vínculo Estrecho", 2, new VinculoEstrecho),
+                               new CartaUnidadADistancia("Arquero", " ", 2, new NullHabilidad), new CartaUnidadADistancia("Ballestero", "Refuerzo Moral", 4, new RefuerzoMoral), new CartaUnidadADistancia("Arquero","Vínculo Estrecho", 2, new VinculoEstrecho),
                                new CartaClimaEscarchaMordiente, new CartaClimaCieloDespejado, new CartaClimaNieblaImpenetrable ,new CartaClimaLluviaTorrencial)
   var Mano: List[Carta] = List()
-  private var observadores: List[Observador] = List()
-  private var atributo: Int = 0
 
-  def agregarObservador(observador: Observador): Unit = {
-    observadores = observadores :+ observador
+  /**
+   * Notifica al gestor del jugador que se acabaron las gemas
+   */
+  def gemasAgotadas(): Unit = {
+    gestorJugador.notificarGemasAgotadas(this)
   }
 
-  def eliminarObservador(observador: Observador): Unit = {
-    observadores = observadores.filter(_ != observador)
+  /**Verifica que las gemas no se hayan acabado
+   *
+   */
+  def actualizar(): Unit = {
+    if (getAtributo == 0) {
+      gemasAgotadas()
+    }
   }
 
-  def setAtributo(nuevoAtributo: Int): Unit = {
-    atributo = nuevoAtributo
-    notificarObservadores()
-  }
-
-  private def notificarObservadores(): Unit = {
-    observadores.foreach(_.actualizar(this))
-  }
-
+  /** Entrega la gemas del jugador
+   *
+   * @return devuelve las gemas del jugador
+   */
   def getAtributo: Int = Gemas
   override def canEqual(that: Any): Boolean = that.isInstanceOf[Jugador]
   override def equals(that: Any): Boolean = {
@@ -75,59 +86,63 @@ class Jugador (nombre: String, seccion: String) extends Equals {
   /**
    * Roba una carta del mazo del jugador y la añade a la mano
    *
-   * @param obj el jugador que ejecutara la accion
    * @param numero la cantidad de cartas que hay en el mazo
    * @throws No se ejecuta si el numero de cartas que se intenta robar es mayor a la que posee el mazo
    *
    * @example
    * {{{
-   * val jugador = new Jugador("John","Norte")
+   * val jugador = new Jugador("John","Norte", new GestorJugador)
    * println("La cantidad de cartas en el mazo es:" + jugador.Mazo.size)
    * jugador.robar(jugador,8)
    * println(La cantidad de cartas en la mano es:" + jugador.Mano.soze)
    * }}}
    *
-   * @see Acciones
    */
-  def robar(obj:Jugador, numero: Int): Unit = {
-    if((numero > 0) && (obj.Mazo.length - numero >= 0)){
-      val (cartas_sacadas,restantes) = obj.Mazo.splitAt(numero)
-      obj.Mano = obj.Mano ++ cartas_sacadas
-      obj.Mazo = restantes
+  def robar(numero: Int): Unit = {
+    if((numero > 0) && (Mazo.length - numero >= 0)){
+      val (cartas_sacadas,restantes) = Mazo.splitAt(numero)
+      Mano = Mano ++ cartas_sacadas
+      Mazo = restantes
     }
   }
 
   /**
    * Juega una carta de la mano
    *
-   * @param obj el jugador que ejecutara la accion
+   * @param oponente es el oponente
    * @param numero la posicion de la carta que se jugara
-   * @param tablero el tablero donde se jugara la carta
    * @throws No se ejecuta si la mano no tiene cartas
    *
    * @example
    * {{{
-   * val jugador = new Jugador("John","Norte")
-   * val tablero = new Tablero
+   * val jugador: Jugador  = new Jugador("John","Norte", new GestorJugador)
+   * val oponente: Jugador = new Jugador("John","Norte", new GestorJugador)
    * println("La cantidad de cartas en la mano es:" + jugador.Mano.size)
-   * jugador.robar(jugador,10)
-   * jugador.jugar(jugador,3,tablero)
+   * jugador.robar(oponente,10)
+   * jugador.jugar(oponente,3)
    * println(La cantidad de cartas en el mazo es:" + jugador.Mano.size)
    * }}}
    */
-   def jugar(obj: Jugador, numero: Int,tablero: Tablero): Unit = {
-    if(obj.Mano.nonEmpty && (numero > 0 && numero <= obj.Mano.size)){
-      obj.Mano(numero-1).jugar(tablero)
-      obj.Mano = obj.Mano.filterNot(_ == obj.Mano(numero-1))
+   def jugar(oponente: Jugador, numero: Int): Unit = {
+    if(this.Mano.nonEmpty && (numero > 0 && numero <= this.Mano.size)){
+      this.Mano(numero-1).jugar(this,oponente)
+      this.Mano = this.Mano.filterNot(_ == this.Mano(numero-1))
     }
   }
-  def perder_ronda(obj: Jugador): Unit = {
-    if(obj.Gemas > 0) {
-      obj.Gemas -= 1
-      /**if(obj.Gemas == 0){
-        obj.perder_partida()
-      }**/
-    }
 
+  /**
+   * Es la funcion que se ejecuta cuando un jugador pierde una ronda
+   *
+   * * @example
+   * {{{
+   * val jugador: Jugador  = new Jugador("John","Norte", new GestorJugador)
+   * jugador.perder_rondar()
+   * }}}
+   */
+  def perder_ronda(): Unit = {
+    if(Gemas > 0) {
+      Gemas -= 1
+    }
+    actualizar()
   }
 }
